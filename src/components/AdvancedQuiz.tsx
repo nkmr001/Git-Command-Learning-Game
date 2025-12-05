@@ -53,12 +53,12 @@ export function AdvancedQuiz({ scenario, onComplete, onBack }: AdvancedQuizProps
       setTimeout(() => {
         if (currentTaskIndex < totalTasks - 1) {
           setCurrentTaskIndex(prev => prev + 1);
-          setHistory([]);
+          // Keep history for context, don't clear it
           setShowHint(false);
         } else {
           setQuizComplete(true);
         }
-      }, 1500);
+      }, 1000);
     }
   };
 
@@ -194,13 +194,36 @@ export function AdvancedQuiz({ scenario, onComplete, onBack }: AdvancedQuizProps
         )}
       </Card>
 
+      {/* Command Log */}
+      <Card className="p-6 bg-slate-900 border-slate-800 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-400 mb-2 flex items-center gap-2">
+          <div className="size-2 rounded-full bg-green-500 animate-pulse" />
+          Command Log
+        </h3>
+        <div className="font-mono text-sm space-y-1 max-h-48 overflow-y-auto">
+          {history.length === 0 && (
+            <div className="text-slate-600 italic">No commands executed yet...</div>
+          )}
+          {history.map((item, index) => (
+            <div key={index} className="space-y-1 border-b border-slate-800 pb-2 mb-2 last:border-0 last:pb-0 last:mb-0">
+              <div className="flex items-center gap-2 text-slate-300">
+                <span className="text-green-500">$</span>
+                <span>{item.command}</span>
+              </div>
+              {item.result && (
+                <div className={`pl-4 whitespace-pre-wrap ${item.isError ? 'text-red-400' : 'text-slate-400'}`}>
+                  {item.result}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </Card>
+
       <TerminalInterface
         history={history}
         onCommand={handleCommand}
-        onReset={() => {
-          setHistory([]);
-          setRepoState(scenario.initialState);
-        }}
+        onReset={handleRetry}
         showHint={showHint}
         onToggleHint={() => setShowHint(!showHint)}
       />

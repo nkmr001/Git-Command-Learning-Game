@@ -61,6 +61,10 @@ export function AdvancedQuizList({
     expert: scenarios.filter(s => s.difficulty === 'expert'),
   };
 
+  if (scenarios.length === 0) {
+    return <div className="p-8 text-center text-slate-500">シナリオが見つかりません</div>;
+  }
+
   return (
     <div className="space-y-8">
       <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg p-6">
@@ -72,7 +76,7 @@ export function AdvancedQuizList({
 
       {Object.entries(groupedScenarios).map(([difficulty, items]) => {
         if (items.length === 0) return null;
-        
+
         return (
           <div key={difficulty}>
             <h3 className="text-slate-900 mb-4 flex items-center gap-2">
@@ -86,12 +90,12 @@ export function AdvancedQuizList({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="h-full"
                 >
-                  <Card className={`p-6 hover:shadow-lg transition-all duration-300 ${
-                    completedScenarios.has(scenario.id)
+                  <Card className={`p-6 hover:shadow-lg transition-all duration-300 h-full flex flex-col ${completedScenarios.has(scenario.id)
                       ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'
                       : 'bg-white'
-                  }`}>
+                    }`}>
                     <div className="flex items-start justify-between mb-3">
                       <h4 className="text-slate-900 flex-1">
                         {scenario.title}
@@ -101,7 +105,7 @@ export function AdvancedQuizList({
                       )}
                     </div>
 
-                    <p className="text-slate-600 text-sm mb-4 line-clamp-2">
+                    <p className="text-slate-600 text-sm mb-4 line-clamp-2 flex-grow">
                       {scenario.description}
                     </p>
 
@@ -110,24 +114,13 @@ export function AdvancedQuizList({
                         {getDifficultyLabel(scenario.difficulty)}
                       </Badge>
                       <Badge variant="outline">
-                        {scenario.steps.length} ステップ
+                        {scenario.tasks ? scenario.tasks.length : 0} ステップ
                       </Badge>
-                    </div>
-
-                    <div className="mb-4">
-                      <p className="text-xs text-slate-500 mb-2">使用するコマンド:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {scenario.requiredCommands.map((cmd, i) => (
-                          <code key={i} className="text-xs bg-slate-100 px-2 py-1 rounded">
-                            git {cmd}
-                          </code>
-                        ))}
-                      </div>
                     </div>
 
                     <Button
                       onClick={() => onSelectScenario(scenario)}
-                      className={`w-full bg-gradient-to-r ${getDifficultyColor(scenario.difficulty)} hover:opacity-90`}
+                      className={`w-full bg-gradient-to-r ${getDifficultyColor(scenario.difficulty)} hover:opacity-90 mt-auto`}
                     >
                       挑戦する
                     </Button>

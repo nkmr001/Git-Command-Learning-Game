@@ -1,4 +1,5 @@
 import { RepositoryState, initialRepositoryState } from '../utils/gitSimulator';
+import { additionalScenarios } from '../data/advancedScenarios';
 
 export type AdvancedScenario = {
   id: string;
@@ -14,6 +15,7 @@ export type AdvancedScenario = {
     expectedCommand: string;
     hint: string;
   }[];
+  requiredCommands?: string[]; // Optional for now, can be derived or added
 };
 
 // Helper to create a base state with some commits
@@ -100,7 +102,8 @@ export const advancedScenarios: AdvancedScenario[] = [
         expectedCommand: 'git commit -m "Resolve merge conflict"',
         hint: '通常のコミットと同じです'
       }
-    ]
+    ],
+    requiredCommands: ['merge', 'add', 'commit']
   },
   {
     id: 'interactive-rebase',
@@ -117,7 +120,8 @@ export const advancedScenarios: AdvancedScenario[] = [
         expectedCommand: 'git rebase -i HEAD~3',
         hint: 'HEAD~3 で3つ前まで指定します'
       }
-    ]
+    ],
+    requiredCommands: ['rebase']
   },
   {
     id: 'cherry-pick',
@@ -134,6 +138,11 @@ export const advancedScenarios: AdvancedScenario[] = [
         expectedCommand: 'git cherry-pick h0t1f2x',
         hint: 'コミットハッシュを指定して cherry-pick します'
       }
-    ]
-  }
+    ],
+    requiredCommands: ['cherry-pick']
+  },
+  ...additionalScenarios.map(s => ({
+    ...s,
+    requiredCommands: s.tasks.map(t => t.expectedCommand.split(' ')[1])
+  }))
 ];

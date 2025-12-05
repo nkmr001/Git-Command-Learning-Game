@@ -25,10 +25,10 @@ export function CommandCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
+      className="h-full"
     >
-      <Card className={`p-6 hover:shadow-lg transition-all duration-300 ${
-        isCompleted ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' : 'bg-white'
-      }`}>
+      <Card className={`p-6 hover:shadow-lg transition-all duration-300 h-full flex flex-col ${isCompleted ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' : 'bg-white'
+        }`}>
         <div className="flex items-start justify-between mb-3">
           <code className="text-lg text-slate-900 bg-slate-100 px-3 py-1 rounded">
             {command.name}
@@ -37,8 +37,8 @@ export function CommandCard({
             <CheckCircle2 className="size-6 text-green-600 flex-shrink-0" />
           )}
         </div>
-        
-        <p className="text-slate-600 mb-4 line-clamp-2">
+
+        <p className="text-slate-600 mb-4 line-clamp-2 flex-grow">
           {command.description}
         </p>
 
@@ -51,7 +51,7 @@ export function CommandCard({
           )}
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-auto">
           <Button
             onClick={onSelect}
             variant="outline"
@@ -59,7 +59,7 @@ export function CommandCard({
             size="sm"
           >
             <BookOpen className="size-4 mr-2" />
-            詳細を見る
+            詳細
           </Button>
           <Button
             onClick={onStartQuiz}
