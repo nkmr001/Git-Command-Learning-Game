@@ -5,4 +5,5 @@
 
   ## 実際の物
   
-  https://nkmr001.github.io/Git-Command-Learning-Game/https://nkmr001.github.io/Git-Command-Learning-Game/
+  https://nkmr001.github.io/Git-Command-Learning-Game
+  
